@@ -14,20 +14,16 @@ use IEEE.NUMERIC_STD.ALL;
 use IEEE.std_logic_unsigned.all;
 
 entity edice is
-    Port ( clk      : in std_logic;
-           R        : in STD_LOGIC_VECTOR(2 downto 0);
-           cheat    : in std_logic;
-           rst      : in STD_LOGIC;
-           run      : in STD_LOGIC; -- run sequence
-           an       : out std_logic_vector(3 downto 0); -- select 7seg-disp -- default=1110
-           dice_7   : out STD_LOGIC_VECTOR(6 downto 0); -- leds dice
-           seg_7    : out STD_LOGIC_VECTOR(6 downto 0); -- 7 segment display
-           dp       : out std_logic); -- decimal point
+    Port ( clk, cheat, rst, run : in std_logic;
+           R : in STD_LOGIC_VECTOR(2 downto 0);
+           an : out std_logic_vector(3 downto 0); -- select 7seg-disp -- default=1110
+           dice_7 : out STD_LOGIC_VECTOR(6 downto 0); -- leds dice
+           seg_7 : out STD_LOGIC_VECTOR(6 downto 0); -- 7 segment display
+           dp : out std_logic); -- decimal point
 end edice;
 
 architecture Behavioral of edice is
     signal state, next_state : std_logic_vector (2 downto 0);
-    --signal bcd_in : std_logic_vector(2 downto 0);
     --signal State, NxtState : integer range 0 to 7;
     signal seg_val, led_val : std_logic_vector(6 downto 0);
 begin
