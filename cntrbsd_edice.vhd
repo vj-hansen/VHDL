@@ -23,151 +23,149 @@ entity edice is
 end edice;
 
 architecture Behavioral of edice is
-    signal state, next_state : std_logic_vector (2 downto 0);
-    --signal State, NxtState : integer range 0 to 7;
+    signal state : std_logic_vector (2 downto 0);
     signal seg_val, led_val : std_logic_vector(6 downto 0);
+    signal cnt : std_logic_vector(2 downto 0) := (others => '0');
 begin
    
-process (CLK, RST)
+count_process: process (CLK, state)
     begin
-        if (RST = '1') then
-            state <= "000";
-        elsif (rising_edge(CLK)) then
-            if (run = '1') then
-                state <= next_state; 
-            else
-                state <= state;
-            end if;
-        end if;
-end process;
-
-process(state, R, run, cheat)
-  begin
-    an <= "1110";
-    dp <= '1';
-    if (Run = '1') then -- if running 
-        dice_7 <= "0000000";
-        seg_7 <= "1111111";
-    end if;
---------------------------------------  
-    case State is
-        when "000" => -- dice = 1 
-            if (Run = '0') then  -- stop
-                dice_7 <= "0000000"; -- display 1
-                seg_7 <= "1001111";
-                next_State <= "000";    
-            elsif ((cheat = '0') AND (R = "001")) then
-                next_State <= "000";
-            elsif ((cheat = '1') AND (R = "001")) then -- 3x probability
-                seg_val <= "1001111"; -- display 1
-                led_val <= "0000000"; -- display 1
-                next_State <= "001";
-            else 
-                next_state <= "001";
-            end if;
+        if (rising_edge(CLK)) then
+            case State is
+                when "000" => -- dice = 1 
+                    if (Run = '0') then  -- stop
+                        dice_7 <= "0000000"; -- display 1
+                        seg_7 <= "1001111";
+                        cnt <= cnt;    
+                    elsif ((cheat = '0') AND (R = "001")) then
+                        cnt <= cnt;
+                    elsif ((cheat = '1') AND (R = "001")) then -- 3x probability
+                        seg_val <= "1001111"; -- display 1
+                        led_val <= "0000000"; -- display 1
+                        cnt <= cnt + 1;
+                    else 
+                        cnt <= cnt + 1;
+                    end if;
         -------------------  
-        when "001" => -- dice = 2 
-            if (Run = '0') then 
-                dice_7 <= "0000000"; -- display 2
-                seg_7 <= "0010010";
-                next_state <= "001";    
-            elsif ((cheat = '0') AND (R = "010")) then
-                next_state <= "001";
-            elsif ((cheat = '1') AND (R = "010")) then -- 3x probability
-                seg_val <= "0010010"; -- display 2
-                led_val <= "0000000"; -- display 2 fix
-                next_state <= "010";
-            else 
-                next_state <= "010";
-            end if;
+                when "001" => -- dice = 2 
+                    if (Run = '0') then 
+                        dice_7 <= "0000000"; -- display 2
+                        seg_7 <= "0010010";
+                        cnt <= cnt;    
+                    elsif ((cheat = '0') AND (R = "010")) then
+                        cnt <= cnt;
+                    elsif ((cheat = '1') AND (R = "010")) then -- 3x probability
+                        seg_val <= "0010010"; -- display 2
+                        led_val <= "0000000"; -- display 2 fix
+                        cnt <= cnt + 1;
+                    else 
+                        cnt <= cnt + 1;
+                    end if;
         -------------------  
-        when "010" => -- dice = 3 
-            if (Run = '0') then 
-                dice_7 <= "0000000"; -- display 3 fix
-                seg_7 <= "0000110"; -- fix
-                next_state <= "010";    
-            elsif ((cheat = '0') AND (R = "011")) then
-                next_state <= "010";
-            elsif ((cheat = '1') AND (R = "011")) then -- 3x probability
-                seg_val <= "0000110"; -- display 3
-                led_val <= "0000000"; -- display 3 fix
-                next_state <= "011";
-            else 
-                next_state <= "011";
-            end if;
+                when "010" => -- dice = 3 
+                    if (Run = '0') then 
+                        dice_7 <= "0000000"; -- display 3 fix
+                        seg_7 <= "0000110"; -- fix
+                        cnt <= cnt;    
+                    elsif ((cheat = '0') AND (R = "011")) then
+                        cnt <= cnt;
+                    elsif ((cheat = '1') AND (R = "011")) then -- 3x probability
+                        seg_val <= "0000110"; -- display 3
+                        led_val <= "0000000"; -- display 3 fix
+                        cnt <= cnt + 1;
+                    else 
+                        cnt <= cnt + 1;
+                    end if;
         -------------------  
-        when "011" => -- dice = 4 
-            if (Run = '0') then 
-                dice_7 <= "0000000"; -- display 4
-                seg_7 <= "1001100"; -- fix 4
-                next_State <= "011";    
-            elsif ((cheat = '0') AND (R = "100")) then
-                next_State <= "011";
-            elsif ((cheat = '1') AND (R = "100")) then -- 3x probability
-                seg_val <= "1001100"; -- display 4
-                led_val <= "0000000"; -- display 4 fix
-                next_State <= "100";
-            else 
-                next_State <= "100";
-            end if;   
+                when "011" => -- dice = 4 
+                    if (Run = '0') then 
+                        dice_7 <= "0000000"; -- display 4
+                        seg_7 <= "1001100"; -- fix 4
+                        cnt <= cnt;    
+                    elsif ((cheat = '0') AND (R = "100")) then
+                        cnt <= cnt;
+                    elsif ((cheat = '1') AND (R = "100")) then -- 3x probability
+                        seg_val <= "1001100"; -- display 4
+                        led_val <= "0000000"; -- display 4 fix
+                        cnt <= cnt + 1;
+                    else 
+                        cnt <= cnt + 1;
+                    end if;   
         -------------------      
-        when "100" => -- dice = 5 
-            if (Run = '0') then 
-                dice_7 <= "0000000"; -- display 5
-                seg_7 <= "0100100";
-                next_State <= "100" ;    
-            elsif ((cheat = '0') AND (R = "101")) then
-                next_State <= "100";
-            elsif ((cheat = '1') AND (R = "101")) then -- 3x probability
-                seg_val <= "0100100"; -- display 5
-                led_val <= "0000000"; -- display 5 fix
-                next_State <= "101";
-            else 
-                next_State <= "101";
-            end if;
+                when "100" => -- dice = 5 
+                    if (Run = '0') then 
+                        dice_7 <= "0000000"; -- display 5
+                        seg_7 <= "0100100";
+                        cnt <= cnt;    
+                    elsif ((cheat = '0') AND (R = "101")) then
+                        cnt <= cnt;
+                    elsif ((cheat = '1') AND (R = "101")) then -- 3x probability
+                        seg_val <= "0100100"; -- display 5
+                        led_val <= "0000000"; -- display 5 fix
+                        cnt <= cnt + 1;
+                    else 
+                        cnt <= cnt + 1;
+                    end if;
         -------------------  
-        when "101" => -- dice = 6 
-            if (Run = '0') then 
-                dice_7 <= "0000000"; -- display 6 fix
-                seg_7 <= "0100000";
-                next_State <= "101";    
-            elsif ((cheat = '0') AND (R = "110")) then
-                next_State <= "101";
-            
-            elsif (cheat = '1') then
-                if (R = "110") then -- 3x probability
-                    seg_val <= "0100000"; -- display 6
-                    led_val <= "0000000"; -- display 6 fix
-                end if;
-            next_state <= "110";
-            if ((R = "000") OR (R = "111")) then
-                next_state <= "000";
-            end if;
-            else 
-             next_state <= "000";
-            end if;
-        -------------------  
-        when "110" => -- extra round 1 
-            if (Run = '0') then 
-                dice_7 <= led_val;
-                seg_7 <= seg_val;
-                next_State <= "110";    
-            else 
-                next_State <= "110";
-            end if;
-        -------------------  
-        when "111" => -- x2 
-            if (Run = '0') then 
-                dice_7 <= led_val;
-                seg_7 <= seg_val;
-                next_State <= "111";    
-            else
-                next_State <= "000";
-            end if;
-        -------------------      
+                when "101" => -- dice = 6 
+                    if (Run = '0') then 
+                        dice_7 <= "0000000"; -- display 6 fix
+                        seg_7 <= "0100000";
+                        cnt <= cnt;    
+                    elsif ((cheat = '0') AND (R = "110")) then
+                        cnt <= cnt;
+                    elsif (cheat = '1') then
+                        if (R = "110") then -- 3x probability
+                            seg_val <= "0100000"; -- display 6
+                            led_val <= "0000000"; -- display 6 fix
+                            cnt <= cnt + 1;
+                        end if;
+                    elsif ((R = "000") OR (R = "111")) then
+                        cnt <= (others => '0');
+                    end if;
+                -------------------  
+                when "110" => -- extra round 1 
+                    if (Run = '0') then 
+                        dice_7 <= led_val;
+                        seg_7 <= seg_val;
+                        cnt <= cnt;    
+                    else 
+                        cnt <= cnt+1;
+                    end if;
+                -------------------  
+                when "111" => -- x2 
+                    if (Run = '0') then 
+                        dice_7 <= led_val;
+                        seg_7 <= seg_val;
+                        cnt <= cnt;    
+                    else
+                        cnt <= (others => '0');
+                    end if;
+                -------------------      
         when others =>
             dice_7 <= "0000000";
-            seg_7 <= "1111111";                              
+--            seg_7 <= "1111111";                              
         end case;
-    end process;
+        end if;
+    end process count_process;
+roll : process(cnt)
+        begin
+            if cnt <= "000" then
+                state <= "000"; -- 0
+            elsif cnt <= "001" then
+                state <= "001"; -- 1
+            elsif cnt <= "010" then
+                state <= "010"; -- 2
+            elsif cnt <= "011" then
+                state <= "011"; -- 3
+            elsif cnt <= "100" then
+                state <= "100"; -- 4
+            elsif cnt <= "101" then
+                state <= "101"; -- 5
+            elsif cnt <= "110" then
+                state <= "110"; -- 6
+            elsif cnt <= "111" then
+                state <= "111";
+            end if;
+    end process roll;
 end Behavioral;
