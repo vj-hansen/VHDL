@@ -32,5 +32,5 @@ new_state <=    "001"       when clear = '1' else -- Clears register and sets co
                 state; -- Pause Output
 
 -- Output logic
-    count <= std_logic_vector(state); -- Converts unsigned to vector form
+    count <= std_logic_vector(state); -- Converts unsigned to vector form, kan sende count til top-file.
 end arch;
