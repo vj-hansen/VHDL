@@ -16,8 +16,6 @@ architecture arch of e_dice is
     signal counter_new: unsigned (2 downto 0);
 begin
 
--- ########## Clock and Counter logic ##########
--- Clock
 process (clk, reset)
 begin
     if(reset = '1') then
@@ -29,13 +27,11 @@ end process;
 
 -- Counter
 counter_new <= "001" when clear = '1' else -- Clears register and sets counter to 1
-            "001" when counter = "110" else -- If counter reches 6 set it to 1
-            counter + 1    when run = '1' else -- Counts up
-            counter; -- Pause Output
+               "001" when counter = "110" else -- If counter reches 6 set it to 1
+               counter + 1    when run = '1' else -- Counts up
+               counter; -- Pause Output
 
 -- Output logic
     count <= std_logic_vector(counter); -- Converts unsigned to vector form
-
--- ########## Clock and Counter logic ##########
 
 end arch;
