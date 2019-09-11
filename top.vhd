@@ -34,8 +34,9 @@ u2 : entity work.sseg port map (
 
     process (clk, cheat, R, run)
         begin
-            if (R = "111") and (cheat = '0') then
+            if (R = "111") and (cheat = '0') then -- og R = "110"
                 clear <= '1';
+          -- X1 og X2
             elsif (((q = "110") OR (q = "111")) AND (cheat = '1')) then
                 clear <= '0';
             elsif (cheat = '0' and R <= q) then
