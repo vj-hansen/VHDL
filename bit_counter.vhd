@@ -18,19 +18,16 @@ begin
 process (clk, reset)
 begin
     if (reset = '1') then
-        ffout <= (others => '0'); -- ffout <= "001"
+        ffout <= (others => '0');
     elsif rising_edge(clk) then
         ffout <= ffin;
     end if;
 end process;
 
-      -- 
-      
 -- Next-state logic (combinational)
-ffin <= (others => '0') when (clear = '1') else  -- <= "001", ikke (others<='0')
+ffin <= (others => '0') when (clear = '1') else
         ffout when (en = '0') else  -- no action (run = 0)
         ffout+1;   -- count up
 
--- output logic (combinational)
 c_out <= std_logic_vector(ffout);
 end Behavioral;
