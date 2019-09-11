@@ -31,7 +31,7 @@ u2 : entity work.sseg port map (
             seg7 => seg7,
             leds => leds
 );
-
+--------------------
     process (clk, cheat, R, run)
         begin
             if (R = "111") and (cheat = '0') then -- og R = "110"
@@ -45,6 +45,5 @@ u2 : entity work.sseg port map (
                 clear <= '0';
             end if;
     end process;
-    
-    
+  ------------------ some issues here            
 end Behavioral;
