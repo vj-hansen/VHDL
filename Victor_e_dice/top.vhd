@@ -7,29 +7,19 @@ entity top is
   Port (clk, cheat, reset, run : in std_logic;
         R_in : in std_logic_vector(2 downto 0);
         an : out std_logic_vector(3 downto 0);
-        seg7 : out STD_LOGIC_VECTOR(6 downto 0);
-        leds : out STD_LOGIC_VECTOR(6 downto 0));
+        seg7, leds : out STD_LOGIC_VECTOR(6 downto 0));
 end top;
 
 architecture Behavioral of top is
+
 signal Res : std_logic_vector(2 downto 0);
 
 begin
-  
-counter : entity work.UniBitCnt port map (
-            clk => clk,
-            run => run,
-            reset => reset,
-            cheat => cheat,
-            R_in  => R_in,
-            R_out => Res
-);
+counter : entity work.counter_logic port map (
+            clk=>clk, run=>run, reset=>reset,
+            cheat=>cheat, R_in=>R_in, R_out=>Res);
 
 display : entity work.sseg port map (
-            BCD => Res,
-            an  => an,
-            seg7 => seg7,
-            leds => leds
-);
+            BCD=>Res, an=>an, seg7=>seg7, leds=>leds);
 
 end Behavioral;
