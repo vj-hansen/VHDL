@@ -1,5 +1,4 @@
 # Counter-based e-dice  :fire:
-CCW1: A counter-based e-dice (due 13 Sep 2019)
 
 The result selection tuple ```R(2:0)``` specifies which of the 6 possible results have triple probability, except:
 * When the cheat input is ‘0’ (i.e. no cheating), in which case all results have equal probability.
