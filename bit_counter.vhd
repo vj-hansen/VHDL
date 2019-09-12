@@ -1,19 +1,21 @@
--- 3-bit counter (result generator)
+-- 3-bit counter
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.std_logic_unsigned.all;
-use ieee.numeric_std.all;
+use IEEE.numeric_std.ALL;
 
 entity UniBitCnt is
-  Port (clk, clear, en, reset : in std_logic;
-        c_out : out std_logic_vector(2 downto 0));
+  Port (clk, run, reset, cheat : in std_logic;
+        R_in : in std_logic_vector(2 downto 0);
+        R_out : out std_logic_vector(2 downto 0));
 end UniBitCnt;
-
 
 architecture Behavioral of UniBitCnt is
     signal ffin, ffout : unsigned(2 downto 0);
+    signal clear : std_logic;
 begin
+
 -- state register section
 process (clk, reset)
 begin
@@ -24,23 +26,17 @@ begin
     end if;
 end process;
 
-      
-      clear <= ((run and not cheat) ffout(2) and not (ffout(1)) and ffout(0)))
-      or (run and cheat and not (rin(2)) and not (rin(1)) and not (rin(0))) -- R = 000
-      or (run and cheat and (rin(2)) and (rin(1)) and (rin(0))) -- R = 111
-      
-      
-      
 -- Next-state logic (combinational)
-ffin <= (others => '0') when (clear = '1') else
-        ffout when (en = '0') else  -- no action (run = 0)
-        ffout+1;   -- count up
+ffin <= (others => '0') when (clear = '1') else 
+        ffout when (run = '0') else  -- no action (run = 0)
+        ffout + 1;
 
-  
-  ---- sender ut tall fra counter om det er mindre enn 5 (=6 på terning),
-  ---- men 
-  rout <= std_logic_vector(ffout) when ffout <= 5 else
-    std_logic_vector(unsigned(rin)-1) -- send verdi for cheat (ffout > 5 --> går til X1 og x2)
+clear <= ( (run) and (not cheat) and (ffout(2)) and (not ffout(1)) and (ffout(0)) )
+        OR ( (run) and (cheat) and (not R_in(2)) and (not R_in(1)) and (not R_in(0)) )  -- R_in = "000"
+        OR ( (run) and (cheat) and (R_in(2)) and (R_in(1)) and (R_in(0)) );             -- R_in = "111"
 
-c_out <= std_logic_vector(ffout);
+-- output logic (combinational)
+R_out <= std_logic_vector(ffout) when ffout <= 5 else
+         std_logic_vector(unsigned(R_in)-1) ;
+             
 end Behavioral;
