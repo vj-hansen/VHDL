@@ -1,4 +1,4 @@
-# Counter-based e-dice 
+# Counter-based e-dice  :fire:
 CCW1: A counter-based e-dice (due 13 Sep 2019)
 
 The result selection tuple ```R(2:0)``` specifies which of the 6 possible results have triple probability, except:
