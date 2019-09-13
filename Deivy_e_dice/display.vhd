@@ -14,7 +14,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 entity display is
    port(
-      hex: in std_logic_vector(2 downto 0);
+      dice_disp: in std_logic_vector(2 downto 0);
       anode: out std_logic_vector(3 downto 0);
       sseg, led: out std_logic_vector(6 downto 0) 
       );
@@ -28,20 +28,20 @@ begin
    
 -- Process for hex-to-7-segment led decoding   
     sseg <= 
-        "1001111" when hex = "000" else  --"001"
-        "0010010" when hex = "001" else  --"010"
-        "0000110" when hex = "010" else  --"011"
-        "1001100" when hex = "011" else  --"100"
-        "0100100" when hex = "100" else  --"101"
-        "0100000";                       --"110"
-
+        "1001111" when dice_disp = "000" else  --"001"
+        "0010010" when dice_disp = "001" else  --"010"
+        "0000110" when dice_disp = "010" else  --"011"
+        "1001100" when dice_disp = "011" else  --"100"
+        "0100100" when dice_disp = "100" else  --"101"
+        "0100000";                             --"110"
+                           
 -- Process for led decoding   
-    led <= 
-        "0000001" when hex = "000" else  --"001"
-        "0000011" when hex = "001" else  --"010"
-        "0000111" when hex = "010" else  --"011"
-        "0001111" when hex = "011" else  --"100"
-        "0011111" when hex = "100" else  --"101"
-        "0111111";                       --"110"   
+    led <=                 
+        "0000001" when dice_disp = "000" else  --"001"
+        "0000011" when dice_disp = "001" else  --"010"
+        "0000111" when dice_disp = "010" else  --"011"
+        "0001111" when dice_disp = "011" else  --"100"
+        "0011111" when dice_disp = "100" else  --"101"
+        "0111111";                             --"110"   
             
 end arch;
