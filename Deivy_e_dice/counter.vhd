@@ -8,7 +8,7 @@
 -- Target Devices: Basys 3
 -- Additional Comments:
 --
--- Tick generator is used in this design because Basys3 clock is at 450MHz(450000000 cycles per second)
+-- Tick generator is used in this design because Basys3 clock is at 100MHz(100000000 cycles per second)
 -- this clock speed is too quick for digits to be visible while run is pressed.
 ----------------------------------------------------------------------------------
 
