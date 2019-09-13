@@ -5,30 +5,30 @@ entity edice_tb is
 end edice_tb;
  
 architecture tb of edice_tb is
-    
-    constant clk_period : time := 10 ns;
-    component edice
-        port (  CLK, Cheat, rst, run : in std_logic;
-                R_in : in std_logic_vector(2 downto 0);    
+constant clk_period : time := 10 ns;
+component top
+        port (  CLK, Cheat, reset, run : in std_logic;
+                set_val : in std_logic_vector(2 downto 0);    
                 an : out std_logic_vector(3 downto 0);
                 seg7, leds : out std_logic_vector(6 downto 0)
             );
-    end component;
+end component;
+ 
 signal clk, Run, Cheat : std_logic;
-signal R_in : std_logic_vector(2 downto 0);
-signal rst : std_logic := '0';
+signal set_val : std_logic_vector(2 downto 0);
+signal reset : std_logic := '0';
 signal an : std_logic_vector(3 downto 0);
 signal seg7, leds : std_logic_vector(6 downto 0);   
 
 begin
-    uut : edice port map
+    uut : top port map
             (
                 clk => clk, leds => leds,
-                seg7 => seg7, R_in => R_in, an => an,
-                cheat => cheat, rst => rst, run => run
+                seg7 => seg7, set_val => set_val, an => an,
+                cheat => cheat, reset => reset, run => run
             );
  
- -- Clock Process:
+ -- clock process
 clk_process : process
    begin
         clk <= '0';
@@ -36,43 +36,43 @@ clk_process : process
         clk <= '1';
         wait for clk_period/2;
 end process;
- 
- 
+-- throw dice
 sim_run: process
     begin
         Run <= '0';
-            wait for clk_period*5;
-        Run <= '1'; 
             wait for clk_period*2;
+        Run <= '1'; 
+            wait for clk_period*5;
 end process; 
-
-
+-- cheating
 sim_cheat: process
     begin
-        cheat <= '1';
+        cheat <= '0';
             wait for clk_period*50;
-        cheat <= '0'; 
+        cheat <= '1'; 
             wait for clk_period*50;
 end process; 
- 
--- Stimuli process       
+-------------     
 stim: process
        begin
-            R_in <= "000";
+            reset <= '1';
+            wait for clk_period;
+            reset <= '0';
+            set_val <= "001"; -- dice = 1
             wait for clk_period*8;
-            R_in <= "001";
+            set_val <= "010"; -- dice = 2
             wait for clk_period*8;
-            R_in <= "010";
+            set_val <= "011"; -- dice = 3
             wait for clk_period*8;
-            R_in <= "011";
+            set_val <= "100"; -- dice = 4
             wait for clk_period*8;
-            R_in <= "100";
+            set_val <= "101"; -- dice = 5
             wait for clk_period*8;
-            R_in <= "101";
+            set_val <= "110"; -- dice = 6
             wait for clk_period*8;
-            R_in <= "110";
+            set_val <= "111"; -- invalid value = 7
             wait for clk_period*8;
-            R_in <= "111";
+            set_val <= "000"; -- invalid value = 0
             wait for clk_period*8;
     end process;
 end;
