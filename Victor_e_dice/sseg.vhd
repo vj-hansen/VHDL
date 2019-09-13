@@ -1,3 +1,7 @@
+-- e-dice: sseg
+-- display dice value on 7-segment display and leds.
+-- Victor Johan Hansen
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
