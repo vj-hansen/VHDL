@@ -31,10 +31,12 @@ ffin <= (others=>'0') when (clear='1') else
         ffout when (run='0') else  -- no action
         ffout+1;
 
+  --------- fix
 clear <= '1' when (run='1' and cheat='0' and ffout="101") else
          '1' when (run='1' and cheat='1' and R_in="000" and ffout="101") else
          '1' when (run='1' and cheat='1' and R_in="111" and ffout="101");
 
+  --------------
 -- output logic (combinational)
 R_out <= std_logic_vector(ffout) when ffout<="101" else
          std_logic_vector(unsigned(R_in)-1);
