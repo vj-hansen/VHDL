@@ -16,7 +16,7 @@ architecture Behavioral of counter_logic is
     signal ffin, ffout : unsigned(2 downto 0);
     signal clear : std_logic;
 begin
--- State register section
+-- State register
 process (clk, reset)
 begin
     if (reset = '1') then
@@ -25,17 +25,16 @@ begin
         ffout <= ffin;
     end if;
 end process;
-      
-clear <='1' when ((run='1') AND (cheat='0') AND (ffout="101")) else
-        '1' when ((run='1') AND (cheat='1') AND (set_val="000") AND (ffout="101")) else
-        '1' when ((run='1') AND (cheat='1') AND (set_val="111") AND (ffout="101")) else
-        '0';
-          
 -- Next-state logic
 ffin <= (others=>'0') when (clear='1') else 
         ffout when (run='0') else  -- no action
         ffout+1;
 -- output logic
 state <= std_logic_vector(ffout) when ffout<="101" else
-         std_logic_vector(unsigned(set_val)-1);             
+         std_logic_vector(unsigned(set_val)-1);   
+  
+clear <='1' when ((run='1') AND (cheat='0') AND (ffout="101")) else
+        '1' when ((run='1') AND (cheat='1') AND (set_val="000") AND (ffout="101")) else
+        '1' when ((run='1') AND (cheat='1') AND (set_val="111") AND (ffout="101")) else
+        '0';
 end Behavioral;
