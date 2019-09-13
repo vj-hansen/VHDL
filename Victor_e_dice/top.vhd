@@ -1,4 +1,4 @@
--- top-design
+-- e-dice: top-design
 -- Victor Johan Hansen
 
 library IEEE;
