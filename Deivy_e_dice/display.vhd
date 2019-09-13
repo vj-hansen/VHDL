@@ -28,26 +28,20 @@ begin
    
 -- Process for hex-to-7-segment led decoding   
     sseg <= 
-        "0000001" when hex = "000" else
-        "1001111" when hex = "001" else
-        "0010010" when hex = "010" else
-        "0000110" when hex = "011" else
-        "1001100" when hex = "100" else
-        "0100100" when hex = "101" else
-        "0100000" when hex = "110" else
-        "0001111";
+        "1001111" when hex = "000" else  --"001"
+        "0010010" when hex = "001" else  --"010"
+        "0000110" when hex = "010" else  --"011"
+        "1001100" when hex = "011" else  --"100"
+        "0100100" when hex = "100" else  --"101"
+        "0100000";                       --"110"
 
 -- Process for led decoding   
     led <= 
-        "0000000" when hex = "000" else
-        "0000001" when hex = "001" else
-        "0000011" when hex = "010" else
-        "0000111" when hex = "011" else
-        "0001111" when hex = "100" else
-        "0011111" when hex = "101" else
-        "0111111" when hex = "110" else
-        "1111111";    
-    
-    
-        
+        "0000001" when hex = "000" else  --"001"
+        "0000011" when hex = "001" else  --"010"
+        "0000111" when hex = "010" else  --"011"
+        "0001111" when hex = "011" else  --"100"
+        "0011111" when hex = "100" else  --"101"
+        "0111111";                       --"110"   
+            
 end arch;
