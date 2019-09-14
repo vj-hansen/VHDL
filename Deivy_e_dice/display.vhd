@@ -26,22 +26,23 @@ begin
 -- turn anode to constant 1 digit orig "1110"
    anode <= "0111";
    
--- Process for hex-to-7-segment led decoding   
+-- Process for hex-to-7-segment decoding   
     sseg <= 
-        "1001111" when dice_disp = "000" else  --"001"
-        "0010010" when dice_disp = "001" else  --"010"
-        "0000110" when dice_disp = "010" else  --"011"
-        "1001100" when dice_disp = "011" else  --"100"
-        "0100100" when dice_disp = "100" else  --"101"
-        "0100000";                             --"110"
+      -- abcdefg
+        "1001111" when dice_disp = "000" else  --1
+        "0010010" when dice_disp = "001" else  --2
+        "0000110" when dice_disp = "010" else  --3
+        "1001100" when dice_disp = "011" else  --4
+        "0100100" when dice_disp = "100" else  --5
+        "0100000";                             --6
                            
 -- Process for led decoding   
     led <=                 
-        "0000001" when dice_disp = "000" else  --"001"
-        "0000011" when dice_disp = "001" else  --"010"
-        "0000111" when dice_disp = "010" else  --"011"
-        "0001111" when dice_disp = "011" else  --"100"
-        "0011111" when dice_disp = "100" else  --"101"
-        "0111111";                             --"110"   
+        "0000001" when dice_disp = "000" else  --1
+        "0000011" when dice_disp = "001" else  --2
+        "0000111" when dice_disp = "010" else  --3
+        "0001111" when dice_disp = "011" else  --4
+        "0011111" when dice_disp = "100" else  --5
+        "0111111";                             --6  
             
 end arch;
