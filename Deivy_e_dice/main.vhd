@@ -15,7 +15,7 @@ use ieee.std_logic_1164.all;
 
 entity main is
    port(
-      clk, run, clear, cheat: in std_logic;
+      clk, reset, run, cheat_en: in std_logic;
       anode: out std_logic_vector(3 downto 0);
       sseg, led: out std_logic_vector(6 downto 0);
       cheat_pins: in std_logic_vector(2 downto 0)
@@ -31,9 +31,10 @@ begin
       port map(
          anode=>anode, sseg=>sseg, led=>led,
          -- dice chooses hex value to display
-         hex=>dice );
+         dice_disp=>dice );
 
   counter_unit: entity work.counter(arch)
      port map(
-        clk=>clk, run=>run, clear=>clear, dice=>dice, cheat=>cheat, cheat_pins=>cheat_pins );
+        clk=>clk, run=>run, reset=>reset, dice=>dice, cheat_en=>cheat_en, cheat_pins=>cheat_pins );
+
 end arch;
