@@ -18,7 +18,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 entity counter is
    port(
-      clk, reset, run, cheat: in std_logic;
+      clk, reset, run, cheat_en: in std_logic;
       dice: out std_logic_vector(2 downto 0);
       cheat_pins: in std_logic_vector(2 downto 0)
       );
@@ -54,18 +54,23 @@ begin
    -- enable slowed down flip-flop updating logic
    ff_en <='1'   when tick_out=pulses else '0'; -- when tick generator matches desired value of pulses, activate flipflop logic
 
-   -- flip-flop update logic for e-dice         
+--   -- ***ONLY FOR SIMULATION*** flip-flop update logic for e-dice         
+--   ff_in <= (others=>'0') when (run='1' and clear='1') else  
+--            ff_out + 1  when run='1' else                   
+--            ff_out;                                         
+
+   -- ***ONLY FOR IMPLEMENTATION*** flip-flop update logic for e-dice         
    ff_in <= (others=>'0') when (ff_en='1' and clear='1') else -- clear flipflops 
             ff_out + 1  when ff_en='1' else                   -- count further
             ff_out;                                           -- pause counter
              
      -- clear flip-flop logic for e-dice
-   clear <= '1' when (cheat='0' and ff_out="101") else                       -- clear when ff exceed "5" w/o cheat is on 
-            '1' when (cheat='1' and ff_out="101" and cheat_pins="000") else  -- clear when ff exceed "5" with cheat is on and invalid cheat combination
-            '1' when (cheat='1' and ff_out="101" and cheat_pins="111") else  -- clear when ff exceed "5" with cheat is on and invalid cheat combination
-            '0';                                                             -- if no condition is met, keep clear signal low                                                                                                                                                                                      
+   clear <= '1' when (cheat_en='0' and ff_out="101") else                       -- clear when ff exceed 5'th state w/o cheat_en is on 
+            '1' when (cheat_en='1' and ff_out="101" and cheat_pins="000") else  -- clear when ff exceed 5'th state with cheat_en is on and invalid cheat_en combination
+            '1' when (cheat_en='1' and ff_out="101" and cheat_pins="111") else  -- clear when ff exceed 5'th state with cheat_en is on and invalid cheat_en combination
+            '0';                                                                -- if no condition is met, keep clear signal low                                                                                                                                                                                      
 
    -- output logic
    dice <= std_logic_vector(ff_out) when ff_out<=5 else -- count normally in all 5 states
-           std_logic_vector(unsigned(cheat_pins)-1);    -- insert 2 states in counter if cheat is valid
+           std_logic_vector(unsigned(cheat_pins)-1);    -- insert 2 states in counter if cheat_en is valid
 end arch;
