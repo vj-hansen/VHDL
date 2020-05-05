@@ -1,7 +1,5 @@
 # Tone Generator for octave 4
 
-Canvas: (http://bit.ly/30YTM7I). 
-
 
 ![alt text](https://github.com/vjhansen/tone_generator/blob/master/misc/W04D1ToneGenerator.png?raw=true)
 
