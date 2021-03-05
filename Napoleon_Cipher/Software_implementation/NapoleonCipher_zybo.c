@@ -26,11 +26,14 @@
 * @param	Original text and Cipher text
 * @return	Cipher text
 ****************************************************************************/
-void encodeDecode(const char* plainText, char* encryptText) {
+void encodeDecode(const char* plainText, char* encryptText) 
+{
 	char key[CIPHER_KEY_LEN] = CIPHER_KEY;
 	int textCounter, keyCounter = 0;
-	for (textCounter = 0; plainText[textCounter] != '\0'; textCounter++) {
-		if(plainText[textCounter] == ' ') {
+	for (textCounter = 0; plainText[textCounter] != '\0'; textCounter++) 
+	{
+		if(plainText[textCounter] == ' ') 
+		{
 			encryptText[textCounter] = ' ';
 			continue;
 		}
@@ -54,36 +57,46 @@ int main() {
 	char text[MAX_TEXT_SIZE] = {'\0'};
 	char convertedText[MAX_TEXT_SIZE] = {'\0'};
 	char selection = '\0';
-	while (1) {
+	while (1) 
+	{
 		char temp;
-		while (selection != 'e' && selection != 'd' && selection != 'q') {
+		while (selection != 'e' && selection != 'd' && selection != 'q') 
+		{
 			printf("\n****Napoleon Cipher****\nPress 'e' for encrypt or 'd' for decrypt, 'q' for quit: "); // this prints twice after first selection
 			scanf("%c%c", &selection, &temp);
 		}
-		if (selection == 'q') {
+		if (selection == 'q') 
+		{
 			print("\nFinished...");
 			return 0;
 		}
-		if (selection == 'e' || selection == 'd' ) { // - Encode
-			if (selection == 'e') {
+		if (selection == 'e' || selection == 'd' ) // - Encode
+		{ 
+			if (selection == 'e') 
+			{
 				print("\r\nEnter the plain text:\r\n");
 			}
-			else {
+			else 
+			{
 				print("\r\nEnter the encrypted text:\r\n");
 			}
 			int i = 0;
-			while((temp = getchar())) {
-				if((temp < 'a' || temp > 'z' ) && temp != ' ' && temp != '\r' && temp != '\n') {
+			while((temp = getchar())) 
+			{
+				if((temp < 'a' || temp > 'z' ) && temp != ' ' && temp != '\r' && temp != '\n') 
+				{
 				   printf("Invalid character ignoring\r\n");
 				   continue;
 				}
-				if (temp == '\n' || temp == '\r') {
+				if (temp == '\n' || temp == '\r') 
+				{
 					text[i]='\0';
 					break;
 				}
 				text[i] = temp;
 				i++;
-				if ( i == MAX_TEXT_SIZE -2 ) {
+				if ( i == MAX_TEXT_SIZE-2 ) 
+				{
 					printf("max size reached\r\n");
 					i++;
 					text[i]='\0';
@@ -91,17 +104,21 @@ int main() {
 				}
 			}
 			encodeDecode(text, convertedText);
-			if (selection == 'e') {
+			if (selection == 'e') 
+			{
 				print("\r\nThe plain text:\r\n");
 			}
-			else {
+			else 
+			{
 				print("\r\nThe encrypted text:\r\n");
 			}
 			print(text);
-			if (selection == 'e') {
+			if (selection == 'e') 
+			{
 				print("\r\nThe encrypted text:\r\n");
 			}
-			else {
+			else 
+			{
 				print("\r\nThe plain text:\r\n");
 			}
 			print(convertedText);
